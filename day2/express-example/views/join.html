@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Join user</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <input type="text" placeholder="이름" id="user_name"><br>
+    <input type="text" placeholder="아이디" id="user_id"><br>
+    <input type="text" placeholder="비번" id="user_password"><br>
+    <button type="button" onclick="join()"> 가입하기 </button>
+</body>
+<script>
+    function join() {
+        //alert($("#user_name").val());
+    }
+
+    $.ajax({
+        url:'http://localhost:3000/join',
+        method:'POST',
+        data: {
+          name : user_name,
+          pw : user_password,
+          id:  user_id
+        },
+        processData : false,
+        success:function(data){
+            $('#time').append(data);
+        }
+    });
+</script>
+</html>
