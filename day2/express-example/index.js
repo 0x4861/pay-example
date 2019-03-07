@@ -1,6 +1,7 @@
 var express    = require('express');
 var request    = require('request');
 var http       = require('http');
+var cors       = require('cors');
 var bodyParser = require('body-parser');
 var convert    = require('xml-js');
 var parser     = require('xml2js');
@@ -9,7 +10,6 @@ var path       = require('path');
 
 
 var app        = express();
-var server     = http.createServer();
 var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
@@ -21,19 +21,13 @@ var option = {
     'hostname': 'www.weather.go.kr',
     'path': '/weather/forecast/mid-term-rss3.jsp?stnld=109'
 }
-
-console.log(path.join(__dirname + '/views'));
-app.set('views', path.join(__dirname + '/views'));
+console.log(path.join(__dirname,'views'));
+app.set('views', path.join(__dirname,'views'));
 app.set('view engine', 'ejs');
-app.engine('html', require('ejs').renderFile);
+app.use(cors());
 
-// parse various different custom JSON types as JSON
-app.use(bodyParser.json({ type: 'application/*+json' }));
-// parse some custom thing into a Buffer
-app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
-// parse an HTML body into a string
-app.use(bodyParser.text({ type: 'text/html' }));
-
+app.use(express.urlencoded());
+app.use(express.json());
 function current(callback) {
     request('http://www.weather.go.kr/weather/forecast/mid-term-rss3.jsp?stnld=109', function (error, response, body) {
         parser.parseString(body, function (err, jsonData) {
@@ -68,8 +62,14 @@ function db_test(req, res) {
     connection.end();
 }
 
+// app.get('/', function (req, res) {
+//   res.sendFile(__dirname+'/views/join.html');
+// });
 app.get('/', function (req, res) {
-  res.sendFile(__dirname+'/views/join.html');
+    request('http://www.naver.com', function (error, response, body) {
+      console.log('body:', body); // Print the HTML for the Google homepage.
+      res.send(body);
+    });
 });
 
 app.get('/sample-test' , sample_test );
@@ -77,11 +77,13 @@ app.get('/request-test', request_test);
 app.get('/db-test'     , db_test     );
 
 app.post('/join', function(req, res) {
+    console.log(req.body);
     var name = req.body.name;
-    var id   = req.body.id;
-    var pw   = req.body.pw;
+    var id = req.body.id;
+    var password = req.body.password;
 
-    console.log(name + id + pw);
+    console.log(name + id + password);
+    res.json(name+id+password);
 });
 
 app.listen(3000);

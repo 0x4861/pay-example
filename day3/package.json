@@ -1,6 +1,7 @@
 {
-  "name": "express-example",
+  "name": "expressexample",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,8 +15,6 @@
     "express": "^4.16.4",
     "mysql": "^2.16.0",
     "request": "^2.88.0",
-    "xml-js": "^1.6.11",
     "xml2js": "^0.4.19"
-  },
-  "description": ""
+  }
 }

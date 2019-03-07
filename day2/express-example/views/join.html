@@ -5,28 +5,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-    <input type="text" placeholder="이름" id="user_name"><br>
-    <input type="text" placeholder="아이디" id="user_id"><br>
-    <input type="text" placeholder="비번" id="user_password"><br>
-    <button type="button" onclick="join()"> 가입하기 </button>
+        <input type="text" placeholder="이름" id="userName"><br>
+        <input type="text" placeholder="아이디" id="userId"><br>
+        <input type="password" placeholder="비밀번호" id="userPassword"><br>
+        <button type="button" onclick="join()">가입</button>
 </body>
 <script>
+    
     function join() {
-        //alert($("#user_name").val());
-    }
+        var name_input = $("#userName").val();
+        var password_input = $("#userPassword").val();
+        var id_input = $("#userId").val();
+        console.log(name_input, password_input, id_input);
 
-    $.ajax({
+
+        $.ajax({
         url:'http://localhost:3000/join',
-        method:'POST',
-        data: {
-          name : user_name,
-          pw : user_password,
-          id:  user_id
+        type : 'POST',
+        data : {
+            name : name_input,
+            password : password_input,
+            id : id_input
         },
-        processData : false,
         success:function(data){
-            $('#time').append(data);
+            console.log(data);
         }
-    });
+        });
+    };
 </script>
 </html>
